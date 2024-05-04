@@ -1,56 +1,57 @@
 pipeline {
     agent any
-    
     stages {
         stage('Build') {
             steps {
-                // Build the code using Maven
                 echo 'Building code using Maven'
+                // Add your Maven build commands here
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                // Run unit tests and integration tests using testing tools
                 echo 'Running unit and integration tests'
+                // Add your test commands here
             }
         }
         stage('Code Analysis') {
             steps {
-                // Integrate a code analysis tool (e.g., SonarQube) to analyze the code
                 echo 'Analyzing code using SonarQube'
+                // Add your SonarQube analysis commands here
             }
         }
         stage('Security Scan') {
             steps {
-                // Perform a security scan using a security scanning tool
                 echo 'Performing security scan'
+                // Add your security scan commands here
             }
         }
         stage('Deploy to Staging') {
             steps {
-                // Deploy application to staging server (e.g., AWS EC2)
                 echo 'Deploying to staging server'
+                // Add your deployment commands here
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                // Run integration tests on staging environment
                 echo 'Running integration tests on staging environment'
+                // Add your integration test commands here
             }
         }
         stage('Deploy to Production') {
             steps {
-                // Deploy application to production server (e.g., AWS EC2)
                 echo 'Deploying to production server'
+                // Add your deployment commands here
             }
         }
     }
-    
     post {
         success {
-            // Send email notification on success
-          emailext body: 'hh', subject: 'h', to: 'sofiyan7026@gmail.com'  
+            echo 'Pipeline successfully executed!'
+            emailext body: 'Pipeline completed successfully.', subject: 'Pipeline Success', to: 'sofiyan7026@gmail.com'
         }
-       
+        failure {
+            echo 'Pipeline execution failed!'
+            emailext body: 'Pipeline failed to execute.', subject: 'Pipeline Failure', to: 'sofiyan7026@gmail.com'
+        }
     }
 }
