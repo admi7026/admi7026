@@ -54,7 +54,7 @@ pipeline {
         failure {
             echo 'Pipeline execution failed!'
             mail to: "sofiyan7026@gmail.com",
-            subject: "Pipeline Failure",
+            subject: "Pipeline Failurye",
             body: "Check again!"    
         }
     }
