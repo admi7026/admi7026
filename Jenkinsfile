@@ -49,7 +49,7 @@ pipeline {
             echo 'Pipeline successfully executed!'
             mail to: "sofiyan7026@gmail.com",
             subject: "Pipeline Succes",
-            body: "It is working"    
+            body: "It is working!"    
         }
         failure {
             echo 'Pipeline execution failed!'
