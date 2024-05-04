@@ -49,7 +49,7 @@ pipeline {
     post {
         success {
             // Send email notification on success
-          emailext body: 'hh', subject: 'h', to: 'hplapi62@gmail.com'  
+          emailext body: 'hh', subject: 'h', to: 'sofiyan7026@gmail.com'  
         }
        
     }
