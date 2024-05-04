@@ -51,9 +51,6 @@ pipeline {
             // Send email notification on success
           emailext body: 'hh', subject: 'h', to: 'hplapi62@gmail.com'  
         }
-        failure {
-            // Send email notification on failure
-            emailext body: "Pipeline failed", subject: "Pipeline Failure", to: "hplapi62@gmail.com"
-        }
+       
     }
 }
