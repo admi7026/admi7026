@@ -47,11 +47,11 @@ pipeline {
     post {
         success {
             echo 'Pipeline successfully executed!'
-            emailext body: 'Pipeline completed successfully.', subject: 'Pipeline Success', to: 'sofiyan7026@gmail.com'
+            emailtext body: 'Pipeline completed successfully.', subject: 'Pipeline Success', to: 'sofiyan7026@gmail.com'
         }
         failure {
             echo 'Pipeline execution failed!'
-            emailext body: 'Pipeline failed to execute.', subject: 'Pipeline Failure', to: 'sofiyan7026@gmail.com'
+            emailtext body: 'Pipeline failed to execute.', subject: 'Pipeline Failure', to: 'sofiyan7026@gmail.com'
         }
     }
 }
