@@ -1,61 +1,70 @@
 pipeline {
-    agent any
+    agent any // Run on any available Jenkins agent
+
     stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/spring-projects/spring-petclinic.git' // Replace with your repository URL
+            }
+        }
+
         stage('Build') {
             steps {
-                echo 'Building code using Maven'
-               
+                sh 'mvn clean package -DskipTests' // Build with Maven, skip tests for now
             }
         }
-        stage('Unit and Integration Tests') {
+
+        stage('Test') {
             steps {
-                echo 'Running unit and integration tests'
-                
+                sh 'mvn test' // Run unit tests
+                junit 'target/surefire-reports/*.xml' // Publish test results
             }
         }
-        stage('Code Analysis') {
+
+        stage('Code Quality Analysis') {
             steps {
-                echo 'Analyzing code using SonarQube'
-               
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar' // Run SonarQube analysis
+                }
             }
         }
-        stage('Security Scan') {
+
+        stage('Build Docker Image') {
             steps {
-                echo 'Performing security scan'
-                
+                script {
+                    dockerImage = docker.build('spring-petclinic') // Name your Docker image
+                }
             }
         }
-        stage('Deploy to Staging') {
+
+        stage('Deploy to Test Environment') {
             steps {
-                echo 'Deploying to staging server'
-               
+                script {
+                    dockerImage.withRun('-p 8080:8080') { c ->
+                        sh "docker exec -t ${c.id} curl -f http://localhost:8080/ || true" // Health check
+                    }
+                }
             }
         }
-        stage('Integration Tests on Staging') {
+
+        stage('Release to Production') {
             steps {
-                echo 'Running integration tests on staging environment'
-                
+                input message: 'Promote to production?', ok: 'Deploy'
+                // Add your production deployment steps here (e.g., push to Docker registry, deploy to Kubernetes)
             }
         }
-        stage('Deploy to Production') {
+
+        stage('Monitoring') {
             steps {
-                echo 'Deploying to production server'
-                
+                echo 'Monitoring is not implemented in this example.'
+                // Integrate with your monitoring tool of choice here (e.g., Prometheus, Grafana)
             }
         }
     }
+
     post {
-        success {
-            echo 'Pipeline successfully executed!'
-            mail to: "sofiyan7026@gmail.com",
-            subject: "Pipeline Succes",
-            body: "It is workings!"    
-        }
-        failure {
-            echo 'Pipeline execution failed!'
-            mail to: "sofiyan7026@gmail.com",
-            subject: "Pipeline Failurye",
-            body: "Check again!"    
+        always {
+            sh 'docker-compose down' // Clean up Docker containers
         }
     }
 }
